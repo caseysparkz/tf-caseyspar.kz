@@ -1,10 +1,9 @@
 ---
 name: 'Infracost'
 on:
-    push:
-        branches:
-            - 'main'
     pull_request:
+        branches:
+            - '**'
 jobs:
     infracost:
         name: 'Infracost.'
@@ -13,12 +12,12 @@ jobs:
             contents: 'read'
             pull-requests: 'write'
         env:
-            TF_ROOT: 'examples/terraform-project/code'
+            TF_ROOT: './*/terraform/'
         steps:
             - name: 'Setup Infracost.'
               uses: 'infracost/actions/setup@v2'
               with:
-                  api-key: ${{ secrets.INFRACOST_API_KEY }}
+                  api-key: ${{secrets.INFRACOST_API_KEY}}
         
             - name: 'Checkout base branch.'
               uses: 'actions/checkout@v3'
@@ -42,13 +41,13 @@ jobs:
                     --path=${TF_ROOT}                                       \
                     --format=json                                           \
                     --compare-to=/tmp/infracost-base.json                   \
-                    --out-file=/tmp/infracost.json
+                    --out-file=/tmp/infracost-diff.json
         
-            - name: 'Post Infracost comment.'
+            - name: 'Post Infracost main diff comment.'
               run: |
                   infracost comment github                                  \
-                      --path=/tmp/infracost.json                            \
-                      --repo=$GITHUB_REPOSITORY                             \
+                      --path=/tmp/infracost-diff.json                       \
+                      --repo=${{github.repository}}                         \
                       --github-token=${{github.token}}                      \
                       --pull-request=${{github.event.pull_request.number}}  \
                       --behavior=update
