@@ -1,10 +1,9 @@
 ---
 name: 'Infracost'
 on:
-    push:
-        branches:
-            - 'main'
     pull_request:
+        branches:
+            - '**'
 jobs:
     infracost:
         name: 'Infracost.'
@@ -13,7 +12,7 @@ jobs:
             contents: 'read'
             pull-requests: 'write'
         env:
-            TF_ROOT: 'examples/terraform-project/code'
+            TF_ROOT: './*/terraform/'
         steps:
             - name: 'Setup Infracost.'
               uses: 'infracost/actions/setup@v2'
@@ -44,11 +43,27 @@ jobs:
                     --compare-to=/tmp/infracost-base.json                   \
                     --out-file=/tmp/infracost.json
         
-            - name: 'Post Infracost comment.'
+            - name: 'Generate Infracost cost estimate for PR branch.'
+              run: |
+                  infracost breakdown                                       \
+                      --path=${TF_ROOT}                                     \
+                      --format=json                                         \
+                      --out-file=/tmp/infracost-branch.json
+        
+            - name: 'Post Infracost cost estimate.'
+              run: |
+                  infracost comment github                                  \
+                      --path=/tmp/infracost-branch.json                     \
+                      --repo=${{github.repository}}                         \
+                      --github-token=${{github.token}}                      \
+                      --pull-request=${{github.event.pull_request.number}}  \
+                      --behavior=update
+
+            - name: 'Post Infracost main diff comment.'
               run: |
                   infracost comment github                                  \
                       --path=/tmp/infracost.json                            \
-                      --repo=$GITHUB_REPOSITORY                             \
+                      --repo=${{github.repository}}                         \
                       --github-token=${{github.token}}                      \
                       --pull-request=${{github.event.pull_request.number}}  \
                       --behavior=update
