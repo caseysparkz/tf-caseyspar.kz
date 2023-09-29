@@ -1,0 +1,111 @@
+baseURL: 'https://www.caseyspar.kz/'
+title: 'caseyspar.kz'
+languageCode: 'en-us'
+DefaultContentLanguage: 'en'
+enableEmoji: true
+enableGitInfo: true
+enableRobotsTXT: true
+canonifyURLs: true
+paginate: 9
+darkmode_js:
+    - 'assets/js/darkmode.js'
+enableInlineShortcodes: true
+params:
+    author: 'Casey Sparks'
+    authorimage: '../assets/images/global/caseysparkz.jpg'
+    #og_image: '/images/tailbliss-cover.png'
+    #moto: 'Super Fast, and Flexible'
+    description: 'Enthusiast.'
+    disable_theme_toggle: false
+    disable_stay_uptodate: true
+    p1:
+        heading: 'Our mission'
+        image: 'images/pages/our-mission.png'
+        content:
+            - text: '1. Try our best.'
+            - text: '2. Have fun.'
+            - text: '3. Safety.'
+    p2:
+        heading: 'We Bring'
+        image: 'images/pages/hacktoberfest.jpg'
+        content:
+            - text: 'Bar.'
+            - text: 'Music.'
+            - text: 'Other stuff.'
+    p4:
+        heading: 'From the blog'
+        content:
+            - text: "Mostly just what music I'm listening to."
+menu:
+    main:
+        - identifier: 'resume'
+          name: 'Resume'
+          url: '/resume.pdf'
+          weight: 10
+        - identifier: 'portfolio'
+          name: 'Portfolio'
+          url: '/portfolio/'
+          weight: 11
+        - identifier: 'git'
+          name: 'Github'
+          url: 'https://github.com/caseysparkz'
+          weight: 12
+        - identifier: 'about'
+          name: 'About'
+          url: '/about/'
+          weight: 90
+        - identifier: 'categories'
+          pre: 'dropdown'
+          name: 'Interests'
+          weight: 95
+        - identifier: 'contact'
+          name: 'Contact'
+          url: '/contact/'
+          weight: 99
+    categories:
+        - identifier: 'music'
+          name: 'Music'
+          url: '/music/'
+          weight: 10
+    footer:
+        - identifier: 'about'
+          name: 'About'
+          url: '/about/'
+          weight: 10
+        - identifier: 'contact'
+          name: 'Contact'
+          url: '/contact/'
+          weight: 50
+markup:
+    goldmark:
+        renderer:
+          unsafe: true
+taxonomies:
+    category: 'Categories'
+    tag: 'Tags'
+privacy:
+    disqus:
+        disable: true
+    googleAnalytics:
+        anonymizeIP: true
+        disable: true
+        respectDoNotTrack: true
+        useSessionStorage: true
+    instagram:
+        disable: true
+        simple: true
+    twitter:
+        disable: true
+        enableDNT: false
+        simple: true
+    vimeo:
+        disable: true
+        enableDNT: false
+        simple: true
+    youtube:
+        disable: true
+        privacyEnhanced: true
+module:
+    hugoVersion:
+        extended: true
+        min: '0.104.0'
